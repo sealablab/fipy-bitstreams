@@ -1,6 +1,6 @@
 options:
   parameters:
-    author: Upul Bulathsinhala
+    author: Liquid Instruments
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''

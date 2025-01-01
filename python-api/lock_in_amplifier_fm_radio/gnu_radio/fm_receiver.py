@@ -6,7 +6,7 @@
 #
 # GNU Radio Python Flow Graph
 # Title: FM Receiver
-# Author: Upul Bulathsinhala
+# Author: Liquid Instruments
 # GNU Radio version: 3.10.9.2
 
 from PyQt5 import Qt

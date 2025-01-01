@@ -19,10 +19,11 @@ import socket
 import time
 
 MOKU_IP = '192.168.0.109'
-CHANNEL_FREQ = 105.9e6
-STREAMING_DURATION = 50
-ENABLE_PLOTTING = False # Enable plotting
-ENABLE_DIFI = True # Enable sending DIFI
+CHANNEL_FREQ = 105.9e6  # Frequnecy of the channel in Hz
+CHANNEL_BANDWIDTH = 125e6  # Bandwidth of the channel in Hz
+STREAMING_DURATION = 50  # Duration of streaming for lock-in amplifier
+ENABLE_PLOTTING = False  # Enable plotting
+ENABLE_DIFI = True  # Enable sending DIFI
 DESTINATION_IP = '127.0.0.1'  # dest address to send packets to
 DESTINATION_PORT = 1234  # dest port to send packets to
 STREAM_ID = 0  # 32 bit int id of stream
@@ -130,7 +131,7 @@ try:
     # View +- 1 ms i.e. trigger in the centre
     i.set_timebase(-1e-3, 1e-3)
 
-    i.start_streaming(duration=STREAMING_DURATION, rate=125e3)
+    i.start_streaming(duration=STREAMING_DURATION, rate=CHANNEL_BANDWIDTH)
 
     if ENABLE_DIFI:
         # Create the socket
