@@ -18,9 +18,9 @@ import traceback
 import socket
 import time
 
-MOKU_IP = '192.168.0.109'
+MOKU_IP = '192.168.0.106'
 CHANNEL_FREQ = 105.9e6  # Frequnecy of the channel in Hz
-CHANNEL_BANDWIDTH = 125e6  # Bandwidth of the channel in Hz
+CHANNEL_BANDWIDTH = 125e3  # Bandwidth of the channel in Hz
 STREAMING_DURATION = 50  # Duration of streaming for lock-in amplifier
 ENABLE_PLOTTING = False  # Enable plotting
 ENABLE_DIFI = True  # Enable sending DIFI
