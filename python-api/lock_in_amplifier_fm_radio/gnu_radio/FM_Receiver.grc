@@ -1,11 +1,11 @@
 options:
   parameters:
-    author: Liquid Instruments
+    author: Upul Bulathsinhala
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
-    copyright: ''
+    copyright: Liquid Instruments
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
