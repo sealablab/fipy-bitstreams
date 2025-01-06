@@ -21,7 +21,7 @@ import time
 MOKU_IP = '192.168.0.106'
 CHANNEL_FREQ = 105.9e6  # Frequnecy of the channel in Hz
 CHANNEL_BANDWIDTH = 125e3  # Bandwidth of the channel in Hz
-STREAMING_DURATION = 50  # Duration of streaming for lock-in amplifier
+STREAMING_DURATION = None  # Duration of streaming for lock-in amplifier, None for infinite
 ENABLE_PLOTTING = False  # Enable plotting
 ENABLE_DIFI = True  # Enable sending DIFI
 DESTINATION_IP = '127.0.0.1'  # dest address to send packets to
@@ -32,45 +32,27 @@ MAX_DATA_LEN = 1017 # max samples per packet
 pkt_count = 0 # packet counter for generating seqnum
 
 # Funtion for sending multiple DIFI packets
-def send_data(udp_socket, dataI, dataQ, lenData):
-    for i in range(0,lenData, MAX_DATA_LEN):
-        curPos = i
-        curLen = MAX_DATA_LEN   # default samples per packet
-        if lenData < MAX_DATA_LEN:
-            curLen = lenData    # adjust the number of samples if 
-                                # the size of passed array is 
-                                # less than the default
-        if curPos + curLen > lenData:
-            curLen = lenData - curPos # set number of samples 
-                                      # for the last packet
-        send_difi(udp_socket, dataI[curPos:curPos+curLen], 
-                  dataQ[curPos:curPos+curLen], curLen) # send a DIFI packet
+def send_data(udp_socket, dataI, dataQ):
+    for i in range(0, len(dataI), MAX_DATA_LEN):
+        send_difi(udp_socket, dataI[i:i+MAX_DATA_LEN], dataQ[i:i+MAX_DATA_LEN])
 
 # Funtion for creating and sending a DIFI packet
-def send_difi(udp_socket, dataI, dataQ, lenData):
+def send_difi(udp_socket, dataI, dataQ):
     # 1st 16 bits of header in hex
-    pkt_type = "1"
+    pkt_type = 1
     clsid = "1" # 1 bit
     rsvd = "00" # 2 bits
     tsm = "0" # 1 bit
     tsi = "01" # 2 bits
     tsf = "10" # 2 bits
-    clsid_rsvd_tsm_tsi_tsf_binary = clsid + rsvd + tsm + tsi + tsf # 10000110
-    clsid_rsvd_tsm_tsi_tsf_dec = int(clsid_rsvd_tsm_tsi_tsf_binary, 2) # dec
-    clsid_rsvd_tsm_tsi_tsf = "%02x" % clsid_rsvd_tsm_tsi_tsf_dec # hex
+    packetchunk = int(clsid + rsvd + tsm + tsi + tsf, 2)
     global pkt_count
-    seqnum = "%01x" % (pkt_count % 16)
-    first_half_header = "%s%s%s" % (pkt_type, clsid_rsvd_tsm_tsi_tsf, seqnum)
-    packetchunk = bytearray.fromhex(first_half_header) # (1A61) 
-                                                       # clsid=0x1,
-                                                       # tsm=0x0,tsf=0x2
-    
-    difi_packet = bytearray() # prep vita/difi payload
-    difi_packet.extend(packetchunk)
+    seqnum = pkt_count % 16
+    difi_packet = bytearray.fromhex(f"{pkt_type:01x}{packetchunk:02x}{seqnum:01x}")
 
-    # 2nd 16 bits of header in hex, (Packet Size)
-    # number of samples + 7 for the header
-    difi_packet.extend(bytearray.fromhex(hex(lenData+7)[2:].zfill(4)))                    
+    # 2nd 16 bits of header in hex
+    difi_packet.extend(bytearray.fromhex(f"{(len(dataI)+7):04x}"))
+                                    # number of samples + 7 for the header            
     difi_packet.extend(STREAM_ID.to_bytes(4, 'big')) # add stream id      
     difi_packet.extend(bytearray.fromhex("006A621E")) # XX:006A621E  
                                                       # XX:OUI for Vita       
@@ -79,14 +61,14 @@ def send_difi(udp_socket, dataI, dataQ, lenData):
                                                       # #icc=0x0000,pcc=0x0000
 
     # Insert time stamp
-    packet_timestamp = format(int(time.time()),'x') # Integer part
-    difi_packet.extend(bytearray.fromhex(packet_timestamp))
-    difi_packet.extend(bytearray.fromhex("0000000000000001")) # Fractional part
+    current_time = time.time()
+    integer_part = int(current_time)
+    fractional_part = int((current_time - integer_part) * (2**32))
+    difi_packet.extend(bytearray.fromhex(f"{integer_part:08x}{fractional_part:08x}"))
 
     # Insert data
-    for i in range(0, lenData): # fill data to the full length of packet
-        difi_packet.extend(bytearray(np.float16(dataI[i])))
-        difi_packet.extend(bytearray(np.float16(dataQ[i])))
+    for i, q in zip(dataI, dataQ):
+        difi_packet.extend(bytearray(np.float16([i, q])))
 
     # Print packet information and send
     # length = len(difi_packet)
@@ -109,8 +91,8 @@ try:
     # Configure the demodulation signal to Local oscillator
     i.set_demodulation('Internal', frequency=CHANNEL_FREQ, phase=0)
 
-    # Set low pass filter to 200 kHz corner frequency with 24 dB/octave slope
-    i.set_filter(0.2e6, slope='Slope24dB')
+    # Set low pass filter to channel bandwidth with 24 dB/octave slope
+    i.set_filter(CHANNEL_BANDWIDTH, slope='Slope24dB')
 
     # Configure output signals
     # X component to Output 1, Y component to Output 2
@@ -155,8 +137,7 @@ try:
         if data:
             if ENABLE_DIFI:
                 # Send data as DIFI packets
-                send_data(udp_socket, data['ch1'], 
-                          data['ch2'], len(data['ch1']))
+                send_data(udp_socket, data['ch1'], data['ch2'])
             if ENABLE_PLOTTING:
                 plt.xlim([data['time'][0], data['time'][-1]])
                 # Update the plot
