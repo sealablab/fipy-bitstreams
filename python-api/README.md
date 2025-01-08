@@ -58,6 +58,8 @@ Datalogger in slot1 and Lockin Amplifier in slot2.
 
 ## Digital Filter Box
 
+### digital_filter_box_plotting.py
+
 This example demonstrates how you can configure the Digital Filter Box instrument 
 to filter and display two signals.
 
@@ -166,6 +168,7 @@ and view triggered time-voltage data frames in real-time.
 <<< @/docs/api/moku-examples/python-api/oscilloscope_plotting.py
 
 ## Phasemeter
+
 ### phasemeter_basic.py
 
 This example demonstrates how you can configure the Phasemeter
@@ -173,6 +176,19 @@ instrument to measure 4 independent signals.
 
 <<< @/docs/api/moku-examples/python-api/phasemeter_basic.py
 
+### phasemeter_plotting.py
+
+This example demonstrates how you can configure the Phasemeter
+instrument to measure 2 independent signals and display the results in real-time.
+
+<<< @/docs/api/moku-examples/python-api/phasemeter_plotting.py
+
+### phasemeter_streaming.py
+
+This example demonstrates how you can configure the Phasemeter
+instrument to measure a signal, stream and display the results.
+
+<<< @/docs/api/moku-examples/python-api/phasemeter_streaming.py
 
 ## PID Controller
 ### pidcontroller_basic.py
@@ -255,3 +271,11 @@ to generate an amplitude modulated sine wave on Channel 1, and a sweep
 modulated sine wave on Channel 2.
 
 <<< @/docs/api/moku-examples/python-api/waveformgenerator_modulation.py
+
+### waveformgenerator_triggered.py
+
+This example demonstrates how you can use the Waveform Generator instrument
+to generate a gated sine wave on Channel 1, and a swept frequency square wave
+on Channel 2.
+
+<<< @/docs/api/moku-examples/python-api/waveformgenerator_triggered.py
