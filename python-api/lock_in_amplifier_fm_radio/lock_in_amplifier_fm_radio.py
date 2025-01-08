@@ -41,11 +41,12 @@ def send_difi(udp_socket, dataI, dataQ):
     # 1st 16 bits of header in hex
     pkt_type = 1
     clsid = "1" # 1 bit
-    rsvd = "00" # 2 bits
-    tsm = "0" # 1 bit
+    ti = "0" # 1 bits
+    vitai = "0" # 1 bit
+    vitast = "0" # 1 bit
     tsi = "01" # 2 bits
     tsf = "10" # 2 bits
-    packetchunk = int(clsid + rsvd + tsm + tsi + tsf, 2)
+    packetchunk = int(clsid + ti + vitai + vitast + tsi + tsf, 2)
     global pkt_count
     seqnum = pkt_count % 16
     difi_packet = bytearray.fromhex(f"{pkt_type:01x}{packetchunk:02x}{seqnum:01x}")
