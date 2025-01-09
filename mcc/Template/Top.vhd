@@ -14,7 +14,7 @@ begin
     -- ___ <= Control1;
     -- ___ <= Control2;
     --      ...
-    -- ___ <= Control9;
+    -- ___ <= Control15;
 
     -- OutputA => ___;
     -- OutputB => ___;
