@@ -23,49 +23,26 @@ import numpy as np
 from moku.instruments import Oscilloscope
 
 # Connect to your Moku by its ip address using Oscilloscope('192.168.###.###')
-
 i = Oscilloscope('XXX.XXX.X.XXX', force_connect=True)
 
-NUM_FRAMES = 1
+NUM_FRAMES = 1  # This is the number of frames to be averaged
 FILE_PATH = "C:/Users/XXXX/Downloads" # Please replace with your own FILE_PATH
 
 try:
+    # Set the data source of Channel 1 to be Input 1   
+    i.set_frontend(1,'50Ohm','DC','400mVpp')
+    i.set_sources([{"channel": 1, "source": "Input1"},
+                   {"channel": 2, "source": "None"},
+                   {"channel": 3, "source": "None"},
+                   {"channel": 4, "source": "None"}])
 
-    i.set_trigger(type='Edge', source='Input1', level=0)
-
-    # View +-5 msec, i.e. trigger in the centre
-    
-    i.set_timebase(-5e-3, 5e-3)
-    
+    i.set_trigger(mode='Normal', type='Edge', source='Input1', level=0)
+    i.set_timebase(-5e-3, 20e-3)
     i.set_acquisition_mode('DeepMemory')
     print(i.get_samplerate())
 
-    # Set the data source of Channel 1 to be Input 1
-    i.set_frontend(1,'50Ohm','AC','400mVpp')
-    i.set_source(1, 'Input1')
-
-    i.set_source(2, 'None')
-    i.set_source(3, 'None')
-    i.set_source(4, 'None')
-
-    # Get initial data frame to set up plotting parameters.
-    data = i.get_data()
-
-    # Set up the plotting parameters
-    plt.ion()
-    plt.show()
-    plt.grid(visible=True)
-    plt.ylim([-1, 1])
-    plt.xlim([data['time'][0], data['time'][-1]])
-
-    line1, = plt.plot([])
-
-    # Configure labels for axes
-    ax = plt.gca()
-      
-    for iter in range(0, NUM_FRAMES):
-        iter = iter + 1
-        i.get_data()
+    for iter in range(NUM_FRAMES):
+        i.get_data(wait_reacquire=True, wait_complete=True)
         response = i.save_high_res_buffer(comments="Triggered")
         file_name = response["file_name"]
         temp_filename = FILE_PATH + "/high_res_data-" + time.strftime('%d-%m-%Y-%H_%M_%S')
@@ -73,18 +50,32 @@ try:
         os.system("mokucli convert --format=npy " + temp_filename + ".li")
         data_load = np.load(temp_filename + ".npy")
         data = np.array(data_load.tolist())
-        if iter == 1:
+        if iter == 0:
             ch1 = data[:,1]
         else:
             ch1 = ch1 + data[:,1]
-                
+            
+        # (Optional) Delete the downloaded and converted files
+        os.remove(temp_filename + ".npy")
+        os.remove(temp_filename + ".li")
+        os.remove(temp_filename + ".txt")
+    
     time_column = data[:,0]
-        
-    line1.set_ydata(ch1/NUM_FRAMES) # calculate the average of all acquired high-res frames
-    line1.set_xdata(time_column)
-        
-except Exception as e:
-    print(f'Exception occurred: {e}')
+    
+    plt.ion()
+    plt.grid(visible=True)
+    plt.show
+    
+    # plot the average of all acquired high-res frames
+    plt.plot(time_column, ch1/NUM_FRAMES)
+    
+    # Configure labels and ranges for axes
+    ax = plt.gca()
+    ax.set_xlim([time_column[0], time_column[-1]])
+    ax.set_ylim([-1, 1])
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Voltage (V)")
+
 finally:
     # Close the connection to the Moku device
     # This ensures network resources and released correctly
