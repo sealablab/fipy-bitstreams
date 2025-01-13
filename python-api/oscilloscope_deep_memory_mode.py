@@ -61,13 +61,10 @@ try:
         os.remove(temp_filename + ".txt")
     
     time_column = data[:,0]
-    
-    plt.ion()
-    plt.grid(visible=True)
-    plt.show
-    
+
     # plot the average of all acquired high-res frames
     plt.plot(time_column, ch1/NUM_FRAMES)
+    plt.grid(visible=True)
     
     # Configure labels and ranges for axes
     ax = plt.gca()
@@ -75,6 +72,7 @@ try:
     ax.set_ylim([-1, 1])
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Voltage (V)")
+    plt.show()
 
 finally:
     # Close the connection to the Moku device
