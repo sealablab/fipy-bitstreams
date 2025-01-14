@@ -63,9 +63,9 @@ def send_difi(udp_socket, dataI, dataQ):
 
     # Insert time stamp
     current_time = time.time()
-    integer_part = int(current_time)
-    fractional_part = int((current_time - integer_part) * (2**32))
-    difi_packet.extend(bytearray.fromhex(f"{integer_part:08x}{fractional_part:08x}"))
+    integer_part = int(current_time) # in seconds
+    fractional_part = int((current_time - integer_part) * (1e12)) # in picoseconds
+    difi_packet.extend(bytearray.fromhex(f"{integer_part:08x}{fractional_part:016x}"))
 
     # Insert data
     for i, q in zip(dataI, dataQ):
