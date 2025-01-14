@@ -15,14 +15,14 @@ This example demonstrates how you can generate and output arbitrary waveforms us
 ### cloud_compile_adder.py
 
 This example demonstrates how you can configure Cloud Compile, using Multi-Instrument mode to run the 
-[Adder example](https://gitlab.com/liquidinstruments/cloud-compile/examples/-/tree/main/adder)
+[Adder example](https://github.com/liquidinstruments/moku-examples/tree/main/mcc/Basic/Adder)
 
 <<< @/docs/api/moku-examples/python-api/cloud_compile_adder.py
 
 ### cloud_compile_arithmetic.py
 
 This example demonstrates how you can configure Cloud Compile, using Multi-Instrument mode to run the 
-[Arithmetic Unit example](https://gitlab.com/liquidinstruments/cloud-compile/examples/-/tree/main/arithmetic_unit)
+[Arithmetic Unit example](https://github.com/liquidinstruments/moku-examples/tree/main/mcc/Moderate/ArithmeticUnit)
 
 <<< @/docs/api/moku-examples/python-api/cloud_compile_arithmetic.py
 
@@ -148,7 +148,7 @@ the "platform_id" to one supported by that hardware.
 This script demonstrates how to use the Neural Network instrument to generate a ramp 
 wave and process it through the uploaded neural network, finally viewing the output 
 in the oscilloscope. This uses the network generated in the 
-[Simple Sine wave example](/mnn/examples/Simple_sine)
+[Simple Sine wave example](https://apis.liquidinstruments.com/mnn/examples/Simple_sine.html)
 
 <<< @/docs/api/moku-examples/python-api/neuralnetwork_simplesine.py
 
