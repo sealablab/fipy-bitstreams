@@ -18,7 +18,7 @@ import traceback
 import socket
 import time
 
-MOKU_IP = '192.168.0.106'
+MOKU_IP = '192.168.0.105'
 CHANNEL_FREQ = 105.9e6  # Frequnecy of the channel in Hz
 CHANNEL_BANDWIDTH = 125e3  # Bandwidth of the channel in Hz
 STREAMING_DURATION = None  # Duration of streaming for lock-in amplifier, None for infinite
@@ -150,11 +150,10 @@ try:
         end_time = time.time()
         time_difference = (end_time - start_time) * 10**3
         num_samples = len(data['ch1'])
-        print("Number of IQ samples: ", num_samples)
-        print("Time taken for transmit: ", time_difference, "ms")
-        print("Transmit sample rate: ",
-              num_samples/time_difference, "ksps")
-        print("-------------------------------------------------------")
+        print(f'Number of IQ samples: {num_samples}')
+        print(f'Time taken for transmit: {time_difference:6.2f} ms')
+        print(f'Transmit sample rate: {(len(data['ch1'])/time_difference):6.2f} ksps')
+        print("------------------------------------------------------")
 
 except (StreamException,KeyboardInterrupt) as e1: 
     # stop streaming and print message to user
