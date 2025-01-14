@@ -75,7 +75,7 @@ If you have any questions, please feel free to post your questions on the [Liqui
 
 ## Compile Bitstreams
 
-The boxcar averager VHDL codes can be found in the [`vhdl_codes`](./vhdl_codes/) folder. To compile your own bitstreams, please follow the [Moku Cloud Compile Reference](https://compile.liquidinstruments.com/docs/deploying.html#building) to build the bitstreams from the provided VHDL codes.
+The boxcar averager VHDL codes can be found in the [`vhdl_codes`](./vhdl_codes/) folder. To compile your own bitstreams, please follow the [Moku Cloud Compile Reference](https://apis.liquidinstruments.com/mcc/deploying.html#building) to build the bitstreams from the provided VHDL codes.
 
 For more information about Moku Cloud Compile, please refer to the [Moku Cloud Compile Getting Started Guide](https://liquidinstruments.com/application-notes/moku-cloud-compile-getting-started-guide).
 

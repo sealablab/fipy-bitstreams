@@ -3,7 +3,7 @@ pageClass: wide-page
 ---
 
 # Other Languages
-For details on what each of these examples are doing, please refer to our [Getting Started with cURL/REST](../../getting-started/starting-curl) page.
+For details on what each of these examples are doing, please refer to our [Getting Started with cURL/REST](https://apis.liquidinstruments.com/api/getting-started/starting-curl.html) page.
 
 If you don't see your language on the list, please reach out to our [Support Engineers](mailto:support@liquidinstruments.com).
 
