@@ -12,7 +12,6 @@ from moku.instruments import LogicAnalyzer
 
 # Connect to your Moku by its ip address using
 # LogicAnalyzer('192.168.###.###')
-# or by its serial number using LogicAnalyzer(serial=123)
 i = LogicAnalyzer('192.168.###.###')
 
 try:

@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 from moku.instruments import PIDController
 
 # Connect to your Moku by its ip address using PIDController('192.168.###.###')
-# or by its serial number using PIDController(serial=123)
 i = PIDController('192.168.###.###', force_connect=False)
 
 try:

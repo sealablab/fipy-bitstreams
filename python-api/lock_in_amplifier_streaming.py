@@ -15,7 +15,6 @@ from moku.instruments import LockInAmp
 
 # Connect to your Moku by its ip address using
 # LockInAmp('192.168.###.###')
-# or by its serial number using LockInAmp(serial=123)
 i = LockInAmp('192.168.xxx.xxx', force_connect=False)
 
 try:

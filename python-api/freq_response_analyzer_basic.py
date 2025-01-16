@@ -10,7 +10,6 @@
 from moku.instruments import FrequencyResponseAnalyzer
 
 # Connect to your Moku by its ip address using FrequencyResponseAnalyzer('192.168.###.###')
-# or by its serial number using FrequencyResponseAnalyzer(serial=123)
 i = FrequencyResponseAnalyzer('192.168.###.###', force_connect=False)
 
 try:

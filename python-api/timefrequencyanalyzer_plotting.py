@@ -11,7 +11,6 @@ import numpy as np
 from moku.instruments import TimeFrequencyAnalyzer
 
 # Connect to your Moku by its ip address using TimeFrequencyAnalyzer('192.168.###.###')
-# or by its serial number using TimeFrequencyAnalyzer(serial=123)
 i = TimeFrequencyAnalyzer('192.168.###.###', force_connect=True)
 
 try:
