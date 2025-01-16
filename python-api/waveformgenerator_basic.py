@@ -9,7 +9,6 @@
 from moku.instruments import WaveformGenerator
 
 # Connect to your Moku by its ip WaveformGenerator('192.168.###.###')
-# or by its serial m = WaveformGenerator(serial=123)
 i = WaveformGenerator('192.168.###.###', force_connect=False)
 
 try:

@@ -10,7 +10,6 @@
 from moku.instruments import LaserLockBox
 
 # Connect to your Moku by its ip address using LaserLockBox('192.168.###.###')
-# or by its serial number using LaserLockBox(serial=123)
 i = LaserLockBox('192.168.xxx.xxx', force_connect=False)
 
 try:

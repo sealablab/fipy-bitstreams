@@ -10,7 +10,6 @@
 from moku.instruments import Phasemeter
 
 # Connect to your Moku by its ip address using Phasemeter('192.168.###.###')
-# or by its serial number using Phasemeter(serial=123)
 i = Phasemeter('192.168.###.###', force_connect=False)
 
 try:

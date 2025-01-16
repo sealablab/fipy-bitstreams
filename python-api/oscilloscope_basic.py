@@ -9,7 +9,6 @@
 from moku.instruments import Oscilloscope
 
 # Connect to your Moku by its ip address using Oscilloscope('192.168.###.###')
-# or by its serial number using Oscilloscope(serial=123)
 i = Oscilloscope('192.168.###.###', force_connect=False)
 
 try:

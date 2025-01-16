@@ -18,7 +18,6 @@ from moku.instruments import DigitalFilterBox
 
 # Connect to your Moku by its ip address using
 # DigitalFilterBox('192.168.###.###')
-# or by its serial number using DigitalFilterBox(serial=123)
 i = DigitalFilterBox('192.168.2.125', force_connect=True)
 
 try:

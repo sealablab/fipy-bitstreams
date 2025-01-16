@@ -12,7 +12,6 @@ import time
 from moku.instruments import Datalogger
 
 # Connect to your Moku by its ip address using Datalogger('192.168.###.###')
-# or by its serial number using Datalogger(serial=123)
 i = Datalogger('192.168.###.###', force_connect=False)
 
 try:

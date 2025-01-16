@@ -14,7 +14,6 @@ from moku.instruments import MultiInstrument, CloudCompile, Oscilloscope
 
 # Connect to your Moku by its ip address using
 # MultiInstrument('192.168.###.###')
-# or by its serial number using MultiInstrument(serial=123)
 m = MultiInstrument('192.168.###.###', platform_id=2)
 
 try:
