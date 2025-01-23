@@ -48,19 +48,19 @@ try:
         temp_filename = FILE_PATH + "/high_res_data-" + time.strftime('%d-%m-%Y-%H_%M_%S')
         i.download("ssd", file_name, temp_filename + ".li")
         os.system("mokucli convert --format=npy " + temp_filename + ".li")
-        data_load = np.load(temp_filename + ".npy")
-        data = np.array(data_load.tolist())
+        file = np.load(temp_filename + ".npy")
+        data_ch1 = file['Channel A (V)']
         if iter == 0:
-            ch1 = data[:,1]
+            ch1 = data_ch1
         else:
-            ch1 = ch1 + data[:,1]
+            ch1 = ch1 + data_ch1
             
         # (Optional) Delete the downloaded and converted files
         os.remove(temp_filename + ".npy")
         os.remove(temp_filename + ".li")
         os.remove(temp_filename + ".txt")
     
-    time_column = data[:,0]
+    time_column = file['Time (s)']
 
     # plot the average of all acquired high-res frames
     plt.plot(time_column, ch1/NUM_FRAMES)
