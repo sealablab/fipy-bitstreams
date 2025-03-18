@@ -1,0 +1,46 @@
+
+# Sine wave generator I/O
+
+## MCC inputs
+
+| Input | Function                    |
+|-------|-----------------------------|
+| InA   | Frequency modulation source |
+| InB   | Amplitude modulation source |
+
+
+## MCC outputs
+
+| Output | Function                    |
+|--------|-----------------------------|
+| OutA   | Frequency and amplitude modulated sine wave |
+| OutB   | Frequency modulated sine wave |
+
+
+## MCC control registers
+
+| Control register| Function                    |
+|-----------|-----------------------------|
+| Control0  | Sine wave frequency control|
+| Control1  | Sine wave amplitude control|
+| Control2  | FM depth|
+| Control3  | AM depth|
+
+### Control0
+
+Sine wave frequency = $\frac{Control0 \times Clk}{2^{29}}$  Hz
+The frequency modulation would be limited to supporting only positive frequency shifts.
+
+### Control1
+
+Sine wave amplitude = $\frac{Control1 \times 4}{LSBs/volt}$  Volt
+
+### Control2
+
+Amplitude modulation = $\frac{InA \times Control2 }{2^{36}}$  Volt
+
+### Control3
+
+Frequency modulation = $\frac{InA \times LSBs/volt \times Control3 \times Clk }{2^{45}}$  Hz
+
+For details on the clock rate and LSBs per volt across different platforms, please refer to [MCC documentation](https://apis.liquidinstruments.com/mcc/io.html).
