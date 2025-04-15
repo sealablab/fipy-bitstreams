@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.Std_Logic_1164.all;
 use IEEE.Numeric_Std.all;
 
--- To use this, you must configure the MCC block in the Multi-instruemnt Mode builder as follows:
+-- To use this, you must configure the MCC block in the Multi-instrument Mode builder as follows:
 -- MCC Slot's Input A -> DIO
 -- MCC Slot's Output B -> DIO
 -- DIO Pin 1-8 set as Input
