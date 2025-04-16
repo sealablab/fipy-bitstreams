@@ -24,8 +24,11 @@ module EventCounter (
 );
   reg signed [15:0] HI_LVL = 16'h7fff;
   reg signed [15:0] LO_LVL = 16'h0000;
-  typedef enum {WaitForEdge, TimeEvent, EventEnded, PeriodEnded} CounterState;
-  CounterState State, NextState;
+  parameter WaitForEdge = 2'b00;
+  parameter TimeEvent = 2'b01;
+  parameter EventEnded = 2'b11;
+  parameter PeriodEnded = 2'b10;
+  reg [1:0] State, NextState;
   reg unsigned [31:0] PeriodCounter;
   reg unsigned [15:0] PulseCounter;
   reg unsigned [15:0] PulseLenCounter;
@@ -68,7 +71,7 @@ module EventCounter (
   
   assign Trigger_edge = (~Prev_Triggered) & Triggered;
 
-  \\ Move to next state
+  // Move to next state
   always@(posedge Clk) begin
     if(Reset==1'b1)
       State <= WaitForEdge;
@@ -76,7 +79,7 @@ module EventCounter (
       State <= NextState;
   end
   
-  \\ Calculate next state
+  // Calculate next state
   always@(State or PeriodCounter or Triggered or PulseLenCounter or PulseCounter)
   begin
       case(State)
