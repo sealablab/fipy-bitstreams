@@ -56,7 +56,7 @@ module DCSequencer (
   // Increment address pointer when a rising edge is detected
   always @(posedge Clk) begin
     if (Reset == 1'b1)
-      DCLevelAddr <= '{default:'0};    // Reset address pointer
+      DCLevelAddr <= 0;                  // Reset address pointer
     else if (Step == 1'b1)
       DCLevelAddr <= DCLevelAddr + 7'd1; // Increment on rising edge of Trigger
   end

@@ -18,8 +18,11 @@ module MovingMedian (
   // Shift in new data into moving window buffer
   ///////////////////////////////////////////////
   always@(posedge Clk) begin
+    integer j;
     if (Reset == 1'b1)
-      moving_window <= '{default: '0};       // Clear window on reset
+      for (j=0; j<4; j=j+1) begin
+        moving_window[j] <= 16'd0;                  // Clear window on reset
+      end 
     else
       moving_window <= {Input, moving_window[0:3]}; // Shift and insert new sample
   end
@@ -33,7 +36,11 @@ module MovingMedian (
     reg signed [15:0] sort_var [0:4];
 
     if (Reset == 1'b1) begin
-      staged_sort <= '{default: '0};         // Clear sorting pipeline
+      for (i=0; i<5; i=i+1) begin
+        for (j=0; j<6; j=j+1) begin
+          staged_sort[i][j] <= 0;                   // Clear sorting pipeline
+        end
+      end
       median <= 16'd0;
     end else begin
 

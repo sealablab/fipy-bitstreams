@@ -17,12 +17,17 @@ module MovingAverage #(
   reg signed [16+G_AVERAGE_LENGTH_LOG-1:0] r_acc;                    // Register to store the running sum of the input values in the buffer
   reg r_data_valid;                                                  // Flag to indicate when valid averaged data is available
   reg signed [15:0] temp_reg;                                        // Register to store final averaged result
-
+  integer j;
+  
   // Synchronous (runs once every clock cycle) logic block
   always @ (posedge Clk) begin
     if (Reset == 1'b1) begin                                         // If Reset is high, clear everything:
-      r_acc <= '{default: '0};                                       // Set the accumulator to zero
-      p_moving_average <= '{default: '0};                            // Clear all stored input samples
+      for (j=0; j<2**G_AVERAGE_LENGTH_LOG; j=j+1) begin
+        p_moving_average[j] <= 16'd0;                                // Clear all stored input samples
+      end   
+      for (j=0; j<16+G_AVERAGE_LENGTH_LOG; j=j+1) begin
+        r_acc[j]<= 1'b0;                                             // Set the accumulator to zero
+      end
       temp_reg <= 16'd0;                                             // Set output register to zero
     end else begin
       p_moving_average <= {InputA, p_moving_average[0:2**G_AVERAGE_LENGTH_LOG-2]};  // Shift the values in the buffer to make room for the new input
