@@ -20,4 +20,5 @@ begin
     -- OutputB => ___;
     -- OutputC => ___;
     -- OutputD => ___;
+    
 end architecture;
