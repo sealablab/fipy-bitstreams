@@ -6,17 +6,17 @@ module ArithmeticUnit (
   input wire Clk                     // Clock signal for synchronous operation
 );
 
-  // Intermediate wires and register
+// Intermediate wires and register
   wire signed [15:0] Add, Sub;       // Wires to hold addition and subtraction results
   wire signed [31:0] Mult;           // Wire to hold 32-bit multiplication result
   reg signed [15:0] temp;            // Register to store the selected operation result
 
-  // Assign arithmetic operations
+// Assign arithmetic operations
   assign Add = A + B;                // Addition
   assign Sub = A - B;                // Subtraction
   assign Mult = A * B;               // Multiplication
 
-  // Synchronous logic block (occurs once every clock cycle) that selects operation based on OpCode
+// Synchronous logic block (occurs once every clock cycle) that selects operation based on OpCode
   always @(posedge Clk) begin
     case (OpCode)
       2'b00: temp = Add;            // OpCode 00: Assign addition result
@@ -26,7 +26,7 @@ module ArithmeticUnit (
     endcase
   end
 
-  // Assign the calculated temp value to the output (Result)
+// Assign the calculated temp value to the output (Result)
   assign Result = temp;
 
 endmodule

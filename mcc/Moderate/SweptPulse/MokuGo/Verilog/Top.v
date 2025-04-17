@@ -46,16 +46,15 @@ module CustomWrapper (
 // Control0 register must be non-zero integer
 // Control1 register must be non-zero integer 
 
-
   PulseMask P1(
-			.clk(Clk),			 
-			.reset(InputA[0]),		// Reset input on DIO pin-0
-			.passthrough(InputB), 		// Will pass this signal through to output when mask is high
-			.divider(Control0[31:0]), 	// Output pulse divider to control frequency
-			.duty(Control1[31:0]),		// Sets the duty cycle of the output pulse
-			.finalOut(OutputB), 		// Either 0 (when Mask is 0) or InputB (when Mask is 1)
-			.maskDAC(OutputC), 		// Mask representation output to DAC linked to OutputC in Multi-instrument Mode
-			.maskDIO(OutputA[8])		// Mask representation output to DIO pin-8 
-			);
+    .clk(Clk),			 
+    .reset(InputA[0]),		    // Reset input on DIO pin-0
+    .passthrough(InputB), 		// Will pass this signal through to output when mask is high
+    .divider(Control0[31:0]), // Output pulse divider to control frequency
+    .duty(Control1[31:0]),		// Sets the duty cycle of the output pulse
+    .finalOut(OutputB), 		  // Either 0 (when Mask is 0) or InputB (when Mask is 1)
+    .maskDAC(OutputC), 		    // Mask representation output to DAC linked to OutputC in Multi-instrument Mode
+    .maskDIO(OutputA[8])		  // Mask representation output to DIO pin-8 
+  );
 
 endmodule

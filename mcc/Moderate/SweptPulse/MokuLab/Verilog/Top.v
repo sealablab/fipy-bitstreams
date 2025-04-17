@@ -37,6 +37,7 @@ module CustomWrapper (
     input wire [31:0] Control14,
     input wire [31:0] Control15
 );
+
 // Designed by Brian J. Neff / Liquid Instruments
 // Will use the devices internal clock along with Control Register inputs to create a variable frequency and pulse width output
 // This code will work as is on any version of the Moku.  However, there is an alternate version that also uses the DIO for the Moku:Go
@@ -44,13 +45,13 @@ module CustomWrapper (
 // Control0 register must be non-zero integer
 // Control1 register must be non-zero integer 
 
-   PulseMask P1(
-			.clk(Clk),			 
-			.passthrough(InputB), 		// Will pass this signal through to output when mask is high
-			.divider(Control0[31:0]), 	// Output pulse divider to control frequency
-			.duty(Control1[31:0]),		// Sets the duty cycle of the output pulse
-			.finalOut(OutputA), 		// Either 0 (when Mask is 0) or InputB (when Mask is 1)
-			.maskDAC(OutputB) 		// Mask representation output to DAC linked to OutputC in Multi-instrument Mode
+PulseMask P1(
+    .clk(Clk),			 
+    .passthrough(InputB), 		// Will pass this signal through to output when mask is high
+    .divider(Control0[31:0]), 	// Output pulse divider to control frequency
+    .duty(Control1[31:0]),		// Sets the duty cycle of the output pulse
+    .finalOut(OutputA), 		// Either 0 (when Mask is 0) or InputB (when Mask is 1)
+    .maskDAC(OutputB) 		    // Mask representation output to DAC linked to OutputC in Multi-instrument Mode
+);  
 
-			);  
 endmodule

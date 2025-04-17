@@ -9,9 +9,9 @@ module MovingMedian (
   reg signed [15:0] sorted_window [0:4];
   reg signed [15:0] median;
 
-  always@(posedge Clk) begin
+  always @(posedge Clk) begin
     integer j;
-    if(Reset==1'b1)
+    if (Reset==1'b1)
       for (j=0; j<4; j=j+1) begin
         moving_window[j] <= 16'd0;
       end
@@ -19,13 +19,13 @@ module MovingMedian (
       moving_window <= {Input, moving_window[0:3]};
   end
 
-  always@(posedge Clk) begin
+  always @(posedge Clk) begin
     reg signed [15:0] temp;
     integer i,j,k;
     reg signed [15:0] var_array [0:4];
+    
     var_array <= moving_window;
-  
-    if(Reset==1'b1) begin
+    if (Reset==1'b1) begin
       for (k=0; k<4; k=k+1) begin
         sorted_window[k] <= 16'd0;
       end

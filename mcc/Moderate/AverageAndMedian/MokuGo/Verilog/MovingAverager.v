@@ -1,6 +1,6 @@
 module MovingAverage #(
   parameter G_AVERAGE_LENGTH_LOG = 10  // This parameter controls the size of the moving average window 
-				       // The window size is 2^G_AVERAGE_LENGTH_LOG samples
+				                               // The window size is 2^G_AVERAGE_LENGTH_LOG samples
 )(
   input wire Clk,                      // Clock signal for synchronous operation
   input wire Reset,                    // Reset signal to reset internal states
@@ -12,15 +12,15 @@ module MovingAverage #(
   output wire signed [15:0] OutputB    // Signed 16-bit result output
 );
 
-  // Intermediate registers
+// Intermediate registers
   reg signed [15:0] p_moving_average [0:2**G_AVERAGE_LENGTH_LOG-1];  // Memory (array) to store the previous N input samples
   reg signed [16+G_AVERAGE_LENGTH_LOG-1:0] r_acc;                    // Register to store the running sum of the input values in the buffer
   reg r_data_valid;                                                  // Flag to indicate when valid averaged data is available
   reg signed [15:0] temp_reg;                                        // Register to store final averaged result
   integer j;
-  
-  // Synchronous (runs once every clock cycle) logic block
-  always @ (posedge Clk) begin
+
+// Synchronous (runs once every clock cycle) logic block
+  always @(posedge Clk) begin
     if (Reset == 1'b1) begin                                         // If Reset is high, clear everything:
       for (j=0; j<2**G_AVERAGE_LENGTH_LOG; j=j+1) begin
         p_moving_average[j] <= 16'd0;                                // Clear all stored input samples
@@ -36,7 +36,7 @@ module MovingAverage #(
     end
   end
 
-  // Assign the averaged result to the output
+// Assign the averaged result to the output
   assign OutputA = temp_reg;  
 
 endmodule

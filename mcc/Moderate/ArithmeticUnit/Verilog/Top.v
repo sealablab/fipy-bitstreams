@@ -37,7 +37,8 @@ module CustomWrapper (
     input wire [31:0] Control14,
     input wire [31:0] Control15
 );
-  ArithmeticUnit_verilog A1(
+
+  ArithmeticUnit A1(
     .A(InputA),
     .B(InputB),
     .OpCode(Control1[1:0]),

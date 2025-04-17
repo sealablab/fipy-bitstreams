@@ -2,7 +2,6 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-
 -- Designed by Brian J. Neff / Liquid Instruments
 -- Will use the devices internal clock to create a variable frequency and pulse width output
 -- Will need to be adjusted for the clock rate of specific device (Moku:Go clock is 31.25 MHz)
@@ -17,13 +16,13 @@ architecture MaskWrapper of CustomWrapper is
     U_PulseMask: entity WORK.PulseMask
       port map(
           clk => Clk,
-          reset => InputA(0), -- Reset input on DIO pin-0
-          passthrough => InputB, -- Will pass this signal through to output when mask is high
+          reset => InputA(0),                         -- Reset input on DIO pin-0
+          passthrough => InputB,                      -- Will pass this signal through to output when mask is high
           divider => unsigned(Control0(31 downto 0)), -- Output pulse divider to control frequency
-          duty => unsigned(Control1(31 downto 0)), -- Sets the duty cycle of the output pulse
-          finalOut => OutputB, -- Either 0 (when Mask is 0) or InputB (when Mask is 1)
-          maskDAC => OutputC, -- Mask representation output to DAC linked to OutputC in Multi-instrument Mode
-          maskDIO => OutputA(8) -- Mask representation output to DIO pin-8 
+          duty => unsigned(Control1(31 downto 0)),    -- Sets the duty cycle of the output pulse
+          finalOut => OutputB,                        -- Either 0 (when Mask is 0) or InputB (when Mask is 1)
+          maskDAC => OutputC,                         -- Mask representation output to DAC linked to OutputC in Multi-instrument Mode
+          maskDIO => OutputA(8)                       -- Mask representation output to DIO pin-8 
       );  
       
 end architecture;
