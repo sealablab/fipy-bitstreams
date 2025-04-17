@@ -48,7 +48,7 @@ module CustomWrapper (
   reg [2:0] Count;
 
   assign OutputA[0] = InputA[8]; 			// Loop back Pin 9 to Pin 1
-  assign OutputA[1] = !InputA[9]; 			// Pin 2 is the inverse of Pin 10
+  assign OutputA[1] = !InputA[9]; 		// Pin 2 is the inverse of Pin 10
   assign OutputA[2] = Count[0]; 			// Pin 3 is a clock at 15.625MHz (Moku:Go MCC core clock is 31.25MHz)				
   assign OutputA[3] = Count[1]; 			// Pin 4 is a clock at half the rate of Pin 3
   assign OutputA[4] = Count[2];				// and Pin 5 is half the rate again
@@ -56,10 +56,11 @@ module CustomWrapper (
   assign OutputA[5] = InputA[10] & InputA[11]; 		// Logical AND
   assign OutputA[6] = InputA[10] | InputA[11];		// Logical OR
 
-  always@(posedge Clk) begin
+  always @(posedge Clk) begin
     if (Reset == 1'b1)
       Count <= 3'b000;
     else
-     Count <= Count+ 3'b001;
+      Count <= Count+ 3'b001;
   end
+
 endmodule

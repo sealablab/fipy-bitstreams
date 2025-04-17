@@ -38,8 +38,8 @@ module CustomWrapper (
     input wire [31:0] Control15
 );
   
-  // The format below follows the following logic:
-  // condition ? value_if_true : value_if_false
+// The format below follows the following logic:
+// condition ? value_if_true : value_if_false
 
   assign OutputA = Control1[0] ? InputA : 16'h000;  // If the 0th bit of the control is 1, the input is passed to the output.
   assign OutputB = Control2[0] ? InputB : 16'h000;  // If the 0th bit of the control is 0, the output is 0.

@@ -38,10 +38,10 @@ module CustomWrapper (
     input wire [31:0] Control15
 );
 
-  // Convert values in control registers to voltage levels on the outputs
-  // The 16 bit scale covers the peak-to-peak range of the device
-  // Control values 1 - 32767 output voltages up to V_peak
-  // Control values 32768 - 65536 output voltages from -V_peak to 0 V
+// Convert values in control registers to voltage levels on the outputs
+// The 16 bit scale covers the peak-to-peak range of the device
+// Control values 1 - 32767 output voltages up to V_peak
+// Control values 32768 - 65536 output voltages from -V_peak to 0 V
 
   assign OutputA = Control1[15:0];
   assign OutputB = Control2[15:0];

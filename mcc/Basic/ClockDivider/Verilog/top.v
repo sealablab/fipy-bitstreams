@@ -37,20 +37,31 @@ module CustomWrapper (
     input wire [31:0] Control14,
     input wire [31:0] Control15
 );
+
+// Designed by Brian J. Neff / Liquid Instruments
+// Will produce a clock divider and output the divided clock to specified pin
+// Moku:Go should be configured as follows:
+// DIO Pin 0 to Input - Will reset the system on logical True
+// DIO Pin 8 to Output - Will output the divided clock pulse by a factor of 2
+// DIO Pin 9 to Output - Will output the divided clock pulse by a factor of 4
+// DIO Pin 10 to Output - Will output the divided clock pulse by a factor of 6
+// All other pins remain unused and can be configured as input or output
+
   clkdiv u_ClkDivider1(
    .clk(Clk),
-   .reset(Control1[31]),
-   .pulse(OutputA[13]));
+   .reset(InputA[0]),
+   .pulse(OutputA[8]));
 
-// Create additional entities to highlight value of using the parameter 
+// Create additional entities to highlight value of using parameter 
 
-  clkdiv #(.divider(10)) u_ClkDivider2(
+  clkdiv #(.divider(2)) u_ClkDivider2(
    .clk(Clk),
-   .reset(Control1[31]),
-   .pulse(OutputA[13]));
+   .reset(InputA[0]),
+   .pulse(OutputA[9]));
   
-  clkdiv #(.divider(4)) u_ClkDivider3(
+  clkdiv #(.divider(3)) u_ClkDivider3(
    .clk(Clk),
-   .reset(Control1[31]),
-   .pulse(OutputA[13]));
+   .reset(InputA[0]),
+   .pulse(OutputA[10]));
+
 endmodule
