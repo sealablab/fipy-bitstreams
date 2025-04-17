@@ -38,6 +38,6 @@ module CustomWrapper (
     input wire [31:0] Control15
 );
   
-DCSequencer D1 (Clk, Reset, InputA, Control0[31:16], Control0[15:0], OutputA, OutputB);
+    DCSequencer D1 (Clk, Reset, InputA, Control0[31:16], Control0[15:0], OutputA, OutputB);
 
 endmodule

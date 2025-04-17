@@ -22,20 +22,27 @@ module EventCounter (
   output wire signed [15:0] DataOutA,
   output wire signed [15:0] DataOutB
 );
+// Registers with constant values to drive output to High or Low level
   reg signed [15:0] HI_LVL = 16'h7fff;
   reg signed [15:0] LO_LVL = 16'h0000;
+
+// State Machine Definition
   parameter WaitForEdge = 2'b00;
   parameter TimeEvent = 2'b01;
   parameter EventEnded = 2'b11;
   parameter PeriodEnded = 2'b10;
   reg [1:0] State, NextState;
+
+// Counter registers
   reg unsigned [31:0] PeriodCounter;
   reg unsigned [15:0] PulseCounter;
   reg unsigned [15:0] PulseLenCounter;
+
+// Flags for trigger detection
   reg Triggered, Prev_Triggered, pulse_detected, QuantumState0;
   wire Trigger_edge;
   
-  always@(posedge Clk) begin
+  always @(posedge Clk) begin
     if (Reset==1'b1) begin
       PeriodCounter<=32'd0;
       PulseLenCounter<=16'd0;
@@ -51,7 +58,7 @@ module EventCounter (
       else
         PulseLenCounter<=16'd0;
 
-      if(State==PeriodEnded)
+      if (State==PeriodEnded)
         PulseCounter<=16'd0;
       else if (State==EventEnded & pulse_detected==1'b1)
         PulseCounter<=PulseCounter+16'd1;        
@@ -59,7 +66,7 @@ module EventCounter (
   end
 
   // Trigger: detect both threshold and edge trigger
-  always@(posedge Clk) begin
+  always @(posedge Clk) begin
     if (Reset==1'b1) begin
       Triggered<=1'b0;
       Prev_Triggered<=1'b0;
@@ -72,7 +79,7 @@ module EventCounter (
   assign Trigger_edge = (~Prev_Triggered) & Triggered;
 
   // Move to next state
-  always@(posedge Clk) begin
+  always @(posedge Clk) begin
     if(Reset==1'b1)
       State <= WaitForEdge;
     else
@@ -80,11 +87,11 @@ module EventCounter (
   end
   
   // Calculate next state
-  always@(State or PeriodCounter or Triggered or PulseLenCounter or PulseCounter)
+  always @(State or PeriodCounter or Triggered or PulseLenCounter or PulseCounter)
   begin
       case(State)
         WaitForEdge:begin
-                      if(PeriodCounter==PeriodCounterLimit)
+                      if (PeriodCounter==PeriodCounterLimit)
                         NextState<=PeriodEnded;
                       else if (Triggered==1'b1) 
                         NextState<=TimeEvent;
@@ -93,7 +100,7 @@ module EventCounter (
                       pulse_detected<=1'b0;
                     end  
         TimeEvent:begin
-                      if(PeriodCounter==PeriodCounterLimit)
+                      if (PeriodCounter==PeriodCounterLimit)
                         NextState<=PeriodEnded;
                       else if (Triggered ==1'b1)
                         NextState<=TimeEvent;
@@ -102,9 +109,9 @@ module EventCounter (
                       pulse_detected<=1'b0;
                   end
         EventEnded: begin
-                      if(PeriodCounter==PeriodCounterLimit)
+                      if (PeriodCounter==PeriodCounterLimit)
                         NextState<=PeriodEnded;
-                      else if ( (PulseLenCounter > PulseMin) & (PulseLenCounter < PulseMax)) begin
+                      else if ((PulseLenCounter > PulseMin) & (PulseLenCounter < PulseMax)) begin
                         pulse_detected<=1'b1;
                         NextState<=WaitForEdge;
                       end
@@ -114,7 +121,7 @@ module EventCounter (
                       end
                     end 
         PeriodEnded:  begin
-                        if(PulseCounter>=MinPulseCount)
+                        if (PulseCounter>=MinPulseCount)
                           QuantumState0<=1'b1;
                         else
                           QuantumState0<=1'b0;
@@ -125,6 +132,7 @@ module EventCounter (
         end
     endcase
   end
+
   assign DataOutA = (QuantumState0==1'b1)? HI_LVL:LO_LVL;
   assign DataOutB = (QuantumState0==1'b0)? HI_LVL:LO_LVL;
 

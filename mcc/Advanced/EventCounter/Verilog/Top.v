@@ -38,5 +38,6 @@ module CustomWrapper (
     input wire [31:0] Control15
 );
   
-  EventCounter E1(Clk, Reset, InputA, Control0, Control1[15:0], Control2[15:0], Control3[15:0], Control4[15:0], OutputA, OutputB )  ;
+  EventCounter E1(Clk, Reset, InputA, Control0, Control1[15:0], Control2[15:0], Control3[15:0], Control4[15:0], OutputA, OutputB);
+
 endmodule

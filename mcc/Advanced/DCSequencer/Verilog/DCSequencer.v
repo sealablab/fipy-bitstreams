@@ -1,3 +1,17 @@
+////////////////////////////////////////////////////////////////
+// Implementation of a DC sequencer
+// Sequence of DC levels are generated on DataOutA,
+// new level each time a trigger event occurs on DataIn.
+// Trigger has a Schmitt style trigger with a lo and hi
+// threshold. The cleaned trigger signal is output on
+// DataOutB for use downstream.
+// Configurable parameters:
+//    Schmitt trigger high value (bits) = Control0[31:16]
+//    Schmitt trigger low value (bits) = Control0[15:0]
+//    Trigger output high and low values, constants
+//    DC value sequence, array of constants
+////////////////////////////////////////////////////////////////
+
 module DCSequencer (
   input wire Clk,                      // System clock
   input wire Reset,                    // Synchronous reset
@@ -8,7 +22,7 @@ module DCSequencer (
   output wire signed [15:0] DataOutB   // Indicates trigger status (HI or LO level)
 );
 
-  // Predefined lookup table with 128 signed 16-bit constants
+// Predefined lookup table with 128 signed 16-bit constants
   reg signed [15:0] DC [0:127] = {
         16'h371E, 16'hF110, 16'hF607, 16'h53A3, 16'h120E, 16'hF9EE, 16'hF2AD, 16'hF968,
         16'hF6D1, 16'hD494, 16'hF5B8, 16'h0F78, 16'h0D18, 16'hDB9B, 16'hEDAA, 16'hE75A,
@@ -28,11 +42,11 @@ module DCSequencer (
         16'h1E7B, 16'hB58E, 16'h2270, 16'h23B5, 16'hC042, 16'h933F, 16'h044A, 16'h1E82
   };
 
-  // Constants to drive output DataOutB depending on trigger state
+// Constants to drive output DataOutB depending on trigger state
   reg signed [15:0] HI_LVL = 16'h7FFF; // High-level output value
   reg signed [15:0] LO_LVL = 16'h0000; // Low-level output value
 
-  // Internal registers
+// Internal registers
   reg Step;             // One-clock pulse when DataIn crosses the HI threshold
   reg Trigger;          // Current trigger state 
   reg TriggerDly;       // Delayed version of Trigger to detect rising edge
@@ -40,7 +54,7 @@ module DCSequencer (
   reg unsigned [6:0] DCLevelAddr; // Address pointer into DC LUT
   integer int_data;     // Used for addressing the array
 
-  // Edge detection logic for triggering
+// Edge detection logic for triggering
   always @(posedge Clk) begin
     if (Reset == 1'b1)
       Trigger <= 1'b0;
@@ -53,7 +67,7 @@ module DCSequencer (
     Step <= Trigger & (~TriggerDly);  // Generate single pulse when Trigger rises
   end
 
-  // Increment address pointer when a rising edge is detected
+// Increment address pointer when a rising edge is detected
   always @(posedge Clk) begin
     if (Reset == 1'b1)
       DCLevelAddr <= 0;                  // Reset address pointer
@@ -61,13 +75,13 @@ module DCSequencer (
       DCLevelAddr <= DCLevelAddr + 7'd1; // Increment on rising edge of Trigger
   end
 
-  // Read current DC value from LUT using DCLevelAddr
+// Read current DC value from LUT using DCLevelAddr
   always @(posedge Clk) begin
     int_data = DCLevelAddr;           // Assign address to integer for indexing
     temp_data <= DC[int_data];        // Lookup corresponding DC value
   end
 
-  // Output assignments
+// Output assignments
   assign DataOutA = temp_data;              // Output from the DC lookup table
   assign DataOutB = (Trigger == 1'b1) ?     // Output high or low level depending on trigger state
                     HI_LVL : LO_LVL;

@@ -3,7 +3,7 @@
 -- Implementation of a DC sequencer
 -- Sequence of DC levels are generated on DataOutA,
 -- new level each time a trigger event occurs on DataIn.
--- Trigger has a schmidtt style trigger with a lo and hi
+-- Trigger has a Schmitt style trigger with a lo and hi
 -- threshold. The cleaned trigger signal is output on
 -- DataOutB for use downstream.
 -- Configurable parameters:
